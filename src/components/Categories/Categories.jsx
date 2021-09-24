@@ -23,6 +23,8 @@ const Categories = ({items}) => {
                 {element}
             </li>)}
         </ul>
+        
+
       </div>
     )
 }
