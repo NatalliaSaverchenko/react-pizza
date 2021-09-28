@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react"
+import React from "react"
 
 const SortPopup = ({items}) => {
 
@@ -7,7 +8,7 @@ const SortPopup = ({items}) => {
 
   const sortRef = useRef()
 
-  const activeLabel = items[activeItem]
+  const activeLabel = items[activeItem].name
 
 const toggleVisiblePopup = () => {
   setVisiblePopup(!visiblePopup)
@@ -53,14 +54,14 @@ useEffect(() => {
                   {items.map((element, index) => 
                   <li 
                   className={activeItem === index ? 'active' : ''} 
-                  key={element} 
+                  key={element.type} 
                   onClick={() => onSelectItem(index)}
                   >
-                    {element}
+                    {element.name}
                   </li>)}
                 </ul>
               </div>}
             </div>
     )
 }
-export default SortPopup
+export default React.memo(SortPopup)
