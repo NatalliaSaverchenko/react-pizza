@@ -1,14 +1,14 @@
 import { useEffect, useRef, useState } from "react"
 import React from "react"
 
-const SortPopup = ({items}) => {
+const SortPopup = ({items, activeSortType, onClickSortType}) => {
 
   const [visiblePopup, setVisiblePopup] = useState(false)
-  const [activeItem, setActiveItem] = useState(0)
+  // const [activeItem, setActiveItem] = useState(0)
 
   const sortRef = useRef()
 
-  const activeLabel = items[activeItem].name
+  const activeLabel = items.find(obj => obj.type === activeSortType).name
 
 const toggleVisiblePopup = () => {
   setVisiblePopup(!visiblePopup)
@@ -21,7 +21,7 @@ const handleOutsideClick = (e) => {
 }
 
 const onSelectItem = (index) => {
-  setActiveItem(index)
+  onClickSortType(index)
   setVisiblePopup(false)
 }
 
@@ -51,13 +51,13 @@ useEffect(() => {
               </div>
               {visiblePopup && <div className="sort__popup">
                 <ul>
-                  {items.map((element, index) => 
+                  {items.map((obj) => 
                   <li 
-                  className={activeItem === index ? 'active' : ''} 
-                  key={element.type} 
-                  onClick={() => onSelectItem(index)}
+                  onClick={() => onSelectItem(obj)}
+                  className={activeSortType === obj.type ? 'active' : ''} 
+                  key={obj.type} 
                   >
-                    {element.name}
+                    {obj.name}
                   </li>)}
                 </ul>
               </div>}

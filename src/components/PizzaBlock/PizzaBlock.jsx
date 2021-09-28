@@ -1,5 +1,4 @@
 import { useState } from "react"
-import PropTypes from 'prop-types'
 
 import classNames from "classnames"
 
@@ -79,24 +78,7 @@ const onSelectSize = (index) => {
 
     )
 }
-    PizzaBlock.propTypes = {
-        name: PropTypes.string.isRequired,
-        imageUrl: PropTypes.string.isRequired,
-        types: PropTypes.arrayOf(PropTypes.number).isRequired,
-        sizes: PropTypes.arrayOf(PropTypes.number).isRequired,
-        price: PropTypes.number.isRequired,
-        category: PropTypes.number.isRequired,
-        rating: PropTypes.number.isRequired,
-    }
-    PizzaBlock.defaultProps  = {
-        name: '',
-        imageUrl: '',
-        types: [],
-        sizes: [],
-        price: 0,
-        category: 0,
-        rating: 0,
-    }
+    
 
 export default PizzaBlock
 
