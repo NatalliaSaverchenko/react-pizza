@@ -20,6 +20,7 @@
     "redux": "^4.1.1",
     "redux-devtools-extension": "^2.13.9",
     "redux-thunk": "^2.3.0",
+    "uuid": "^8.3.2",
     "web-vitals": "^1.1.2"
   },
   "scripts": {
@@ -36,9 +37,7 @@
       "react-app/jest"
     ]
   },
-
   "proxy": "http://localhost:3001",
-
   "browserslist": {
     "production": [
       ">0.2%",
