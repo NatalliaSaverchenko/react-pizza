@@ -1,6 +1,6 @@
 import { useSelector, useDispatch } from "react-redux"
 import CartItem from "../../components/CartItem/CartItem"
-import { clearCart, removeCartItem } from "../../redux/actions/cartActions";
+import { clearCart, removeCartItem, plusCartItem, minusCartItem } from "../../redux/actions/cartActions";
 import emptyCart from '../../assets/img/empty-cart.png'
 
 import { v4 as uuidV4 } from 'uuid';
@@ -21,6 +21,12 @@ const dispatch = useDispatch()
     if (window.confirm('Вы дейтсвительно хотите удалить?')){
       dispatch(removeCartItem(id))
     }
+  }
+  const onPlusCartItem = (id) =>{
+    dispatch(plusCartItem(id))
+  }
+  const onMinusCartItem = (id) =>{
+    dispatch(minusCartItem(id))
   }
   return (
   <div className='content'>
@@ -58,6 +64,8 @@ const dispatch = useDispatch()
           totalPrice={items[obj.id].totalPrice}
           totalCount={items[obj.id].items.length}
           onRemove={onRemoveItem}
+          onMinus={onMinusCartItem}
+          onPlus={onPlusCartItem}
           />)
           }
         </div>
