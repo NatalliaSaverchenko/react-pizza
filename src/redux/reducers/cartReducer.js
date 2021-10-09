@@ -1,4 +1,11 @@
-import {CLEAR_CART, ADD_PIZZA_TO_CART,REMOVE_CART_ITEM, PLUS_CART_ITEM, MINUS_CART_ITEM} from '../actions/actionsTypes'
+import {
+  CLEAR_CART,
+  ADD_PIZZA_TO_CART,
+  REMOVE_CART_ITEM,
+  PLUS_CART_ITEM,
+  MINUS_CART_ITEM,
+} from '../actions/actionsTypes';
+
 const initialState = {
   items: {},
   totalPrice: 0,
@@ -48,78 +55,78 @@ function deletePizza(allItems, id, index) {
 const cartReducer = (state = initialState, action) => {
   const allItems = JSON.parse(JSON.stringify(state.items));
   switch (action.type) {
-    case ADD_PIZZA_TO_CART: {
-      const currentPizzaItems = !state.items[action.payload.id]
-        ? [action.payload]
-        : addPizza(state.items[action.payload.id].items, action.payload);
+  case ADD_PIZZA_TO_CART: {
+    const currentPizzaItems = !state.items[action.payload.id]
+      ? [action.payload]
+      : addPizza(state.items[action.payload.id].items, action.payload);
 
-      const newItems = {
-        ...state.items,
-        [action.payload.id]: {
-          items: currentPizzaItems,
-          totalCount: getSumProperties(currentPizzaItems, "count"),
-        },
-      };
+    const newItems = {
+      ...state.items,
+      [action.payload.id]: {
+        items: currentPizzaItems,
+        totalCount: getSumProperties(currentPizzaItems, 'count'),
+      },
+    };
 
-      return {
-        ...state,
-        items: newItems,
-        totalCount: state.totalCount + action.payload.count,
-        totalPrice: state.totalPrice + action.payload.totalPrice,
-      };
-    }
-    case PLUS_CART_ITEM: {
-      const { id, index } = action.payload;
-      const currPizzas = allItems[id].items[index];
-      addCartItem(currPizzas);
-      allItems[id].totalCount++;
+    return {
+      ...state,
+      items: newItems,
+      totalCount: state.totalCount + action.payload.count,
+      totalPrice: state.totalPrice + action.payload.totalPrice,
+    };
+  }
+  case PLUS_CART_ITEM: {
+    const { id, index } = action.payload;
+    const currPizzas = allItems[id].items[index];
+    addCartItem(currPizzas);
+    allItems[id].totalCount++;
+
+    return {
+      ...state,
+      items: allItems,
+      totalCount: state.totalCount + 1,
+      totalPrice: state.totalPrice + currPizzas.price,
+    };
+  }
+  case MINUS_CART_ITEM: {
+    const { id, index } = action.payload;
+    const currPizzas = allItems[id].items[index];
+    if (currPizzas.count > 1) {
+      subCartItem(currPizzas);
+      allItems[id].totalCount--;
 
       return {
         ...state,
         items: allItems,
-        totalCount: state.totalCount + 1,
-        totalPrice: state.totalPrice + currPizzas.price,
+        totalCount: state.totalCount - 1,
+        totalPrice: state.totalPrice - currPizzas.price,
       };
     }
-    case MINUS_CART_ITEM: {
-      const { id, index } = action.payload;
-      const currPizzas = allItems[id].items[index];
-      if (currPizzas.count > 1) {
-        subCartItem(currPizzas);
-        allItems[id].totalCount--;
+    return {
+      ...state,
+    };
+  }
+  case REMOVE_CART_ITEM: {
+    const { id, index } = action.payload;
+    const { count, totalPrice } = state.items[id].items[index];
 
-        return {
-          ...state,
-          items: allItems,
-          totalCount: state.totalCount - 1,
-          totalPrice: state.totalPrice - currPizzas.price,
-        };
-      }
-      return {
-        ...state,
-      };
-    }
-    case REMOVE_CART_ITEM: {
-      const { id, index } = action.payload;
-      const { count, totalPrice } = state.items[id].items[index];
+    const updatedItems = deletePizza(
+      allItems,
+      action.payload.id,
+      action.payload.index,
+    );
 
-      const updatedItems = deletePizza(
-        allItems,
-        action.payload.id,
-        action.payload.index
-      );
-
-      return {
-        ...state,
-        items: updatedItems,
-        totalCount: state.totalCount - count,
-        totalPrice: state.totalPrice - totalPrice,
-      };
-    }
-    case CLEAR_CART:
-      return initialState;
-    default:
-      return state;
+    return {
+      ...state,
+      items: updatedItems,
+      totalCount: state.totalCount - count,
+      totalPrice: state.totalPrice - totalPrice,
+    };
+  }
+  case CLEAR_CART:
+    return initialState;
+  default:
+    return state;
   }
 };
 
