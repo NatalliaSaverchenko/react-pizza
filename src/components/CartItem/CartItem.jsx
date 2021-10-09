@@ -1,20 +1,23 @@
 import Button from '../Button/Button'
-const CartItem = ({id, name, totalPrice, totalCount, type, size, onRemove, onMinus, onPlus}) => {
-  const handleRemoveClick = () =>{
-    onRemove(id)
-  }
-  const handlePlusItem = () => {
-    onPlus(id)
-  }
-  const handleMinusItem = () => {
-    onMinus(id)
-  }
+const CartItem = ({
+  id, 
+  index,
+  name, 
+  imageUrl,
+  totalPrice,
+  size,
+  type,
+  count, 
+  onDeleteItem, 
+  addCartItem, 
+  subCartItem
+}) => {
   return (
   <div className="cart__item">
     <div className="cart__item-img">
       <img
       className="pizza-block__image"
-      src="https://dodopizza-a.akamaihd.net/static/Img/Products/Pizza/ru-RU/b750f576-4a83-48e6-a283-5a8efb68c35d.jpg"
+      src={imageUrl}
       alt="Pizza"
       />
     </div>
@@ -24,7 +27,7 @@ const CartItem = ({id, name, totalPrice, totalCount, type, size, onRemove, onMin
     </div>
     <div className="cart__item-count">
       <div 
-      onClick = {handleMinusItem} 
+      onClick = {() => subCartItem(id, index)} 
       className="button button--outline button--circle cart__item-count-minus"
       >
         <svg
@@ -44,9 +47,9 @@ const CartItem = ({id, name, totalPrice, totalCount, type, size, onRemove, onMin
           />
         </svg>
       </div>
-      <b>{totalCount}</b>
+      <b>{count}</b>
       <div 
-      onClick = {handlePlusItem}
+      onClick = {() => addCartItem(id, index)}
       className="button button--outline button--circle cart__item-count-plus"
       >
         <svg 
@@ -72,7 +75,7 @@ const CartItem = ({id, name, totalPrice, totalCount, type, size, onRemove, onMin
     </div>
     <div className="cart__item-remove">
       <Button className="button--circle" outline
-           onClick={handleRemoveClick}
+           onClick={() => onDeleteItem(id, index)}
            >
         <svg width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path d="M5.92001 3.84V5.76V8.64C5.92001 9.17016 5.49017 9.6 4.96001 9.6C4.42985 9.6 4.00001 9.17016 4.00001 8.64L4 5.76L4.00001 3.84V0.96C4.00001 0.42984 4.42985 0 4.96001 0C5.49017 0 5.92001 0.42984 5.92001 0.96V3.84Z" fill="#EB5A1E"/>

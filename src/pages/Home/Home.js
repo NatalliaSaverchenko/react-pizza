@@ -52,16 +52,18 @@ const handleAddPizzaToCart = (obj) =>{
         </div>
         <h2 className="content__title">Все пиццы</h2>
         <div className="content__items">
-          {
-            isLoaded ?
-            items.map(obj => 
-            <PizzaBlock 
-            onClickAddPizza={handleAddPizzaToCart} 
-            key={obj.id}
-            addedCount={cartItems[obj.id] && cartItems[obj.id].items.length}
-            {...obj}/>)
-            : Array(12).fill(0).map((item, index) => {return <LoadingBlock key={index}/>})
-          }
+        {isLoaded
+          ? items.map((props) => (
+              <PizzaBlock
+                {...props}
+                onClickAddPizza={handleAddPizzaToCart}
+                addedCount={
+                  cartItems[props.id] && cartItems[props.id].totalCount
+                }
+                key={props.id}
+              />
+            ))
+          : [...Array(12)].map((_, index) => <LoadingBlock key={index} />)}
       
         </div>
       </div>

@@ -8,25 +8,33 @@ const PizzaBlock = ({ id, name, imageUrl, price, types, sizes, onClickAddPizza, 
 const availableTypes = ['тонкое', 'традиционное']
 const availableSizes = [26, 30, 40]
 const [activeType, setActiveType] = useState(types[0])
-const [activeSize, setActiveSize] = useState(0)
-
+const [activeSize, setActiveSize] = useState(sizes[0])
+const addedAmount = {
+  26: 0,
+  30: 230,
+  40: 370,
+};
+const currPrice = price + addedAmount[activeSize];
 const onSelectType = (index) => {
     setActiveType(index)
 }
 const onSelectSize = (index) => {
     setActiveSize(index)
 }
+
 const onAddPizza = () => {
   const obj = {
     id,
     name,
     imageUrl,
-    price,
-    size: availableSizes[activeSize],
+    price: currPrice,
+    size: activeSize,
     type: availableTypes[activeType],
+    count: 1,
+    totalPrice: currPrice,
   };
-  onClickAddPizza(obj)
-}
+  onClickAddPizza(obj);
+};
 
     return (
             <div className="pizza-block">
@@ -54,13 +62,13 @@ const onAddPizza = () => {
               </ul>
               <ul>
                   {
-                  availableSizes.map((size, index) => 
+                  availableSizes.map((size) => 
                   <li key={size}
                   className={classNames({
-                    active : activeSize === index,
+                    active : activeSize === size,
                     disabled : !sizes.includes(size)
                 })}
-                onClick = {() => onSelectSize(index)}
+                onClick = {() => onSelectSize(size)}
                 >
                    {size} см.  
                   </li>)
@@ -69,7 +77,7 @@ const onAddPizza = () => {
               </ul>
             </div>
             <div className="pizza-block__bottom">
-              <div className="pizza-block__price">от {price} ₽</div>
+              <div className="pizza-block__price">от {currPrice} ₽</div>
               <Button onClick={onAddPizza} className="button--add" outline>
                 <svg
                   width="12"
